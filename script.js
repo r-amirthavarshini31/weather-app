@@ -16,13 +16,12 @@ async function fetchWeather() {
   }
 
   async function getLonAndLat() {
-    const countryCode = 1
+    const geocodeURL = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(searchInput)}&limit=1&appid=${apiKey}`
     const geocodeURL = `https://api.openweathermap.org/geo/1.0/direct?q=${searchInput.replace(" ", "%20")},${countryCode}&limit=1&appid=${apiKey}`
 
-    const response = await fetch(geocodeURL);
-    if (!response.ok) {
-      console.log("Bad response! ", response.status);
-      return;
+    const geocodeData = await getLonAndLat();
+    if (!geocodeData) return;
+    getWeatherData(geocodeData.lon, geocodeData.lat);
     }
 
     const data = await response.json();
